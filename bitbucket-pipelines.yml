@@ -13,3 +13,20 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - cd backend
           - mvn -B verify # -B batch mode makes Maven less verbose
+    - step:
+        name: Deploy to production
+        deployment: test
+        script:
+          - pipe: atlassian/google-app-engine-deploy:0.6.0
+            variables:
+              KEY_FILE: '<string>'
+              PROJECT: '<string>'
+              # DEPLOYABLES: '<string>' # Optional
+              # VERSION: '<string>' # Optional.
+              # BUCKET: '<string>' # Optional.
+              # IMAGE: '<string>' # Optional.
+              # PROMOTE: '<boolean>' # Optional
+              # STOP_PREVIOUS_VERSION: '<boolean>' # Optional.
+              # EXTRA_ARGS: '<string>' # Optional.
+              # DEBUG: '<boolean>' # Optional.
+              # CLOUD_BUILD_TIMEOUT: '<integer>' # Optional
