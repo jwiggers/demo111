@@ -14,19 +14,13 @@ pipelines:
           - cd backend
           - mvn -B verify # -B batch mode makes Maven less verbose
     - step:
-        name: Deploy to production
+        name: Deploy to test
         deployment: test
         script:
           - pipe: atlassian/google-app-engine-deploy:0.6.0
             variables:
-              KEY_FILE: '<string>'
-              PROJECT: '<string>'
-              # DEPLOYABLES: '<string>' # Optional
-              # VERSION: '<string>' # Optional.
-              # BUCKET: '<string>' # Optional.
-              # IMAGE: '<string>' # Optional.
-              # PROMOTE: '<boolean>' # Optional
-              # STOP_PREVIOUS_VERSION: '<boolean>' # Optional.
-              # EXTRA_ARGS: '<string>' # Optional.
-              # DEBUG: '<boolean>' # Optional.
-              # CLOUD_BUILD_TIMEOUT: '<integer>' # Optional
+              KEY_FILE: $KEY_FILE
+              PROJECT: 'pipes-java-maven-spring-boot'
+              DEPLOYABLES: 'target/appengine-staging/app.yaml'
+              VERSION: '${BITBUCKET_BUILD_NUMBER}'
+              EXTRA_ARGS: '--verbosity=debug'
