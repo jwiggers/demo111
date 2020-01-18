@@ -46,3 +46,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+bd-demo1-a65a9e2e7b9e.json
+encoded-key.base64
