@@ -17,10 +17,11 @@ pipelines:
         name: Deploy to test
         deployment: test
         script:
+          - cd backend
           - pipe: atlassian/google-app-engine-deploy:0.6.0
             variables:
               KEY_FILE: $KEY_FILE
               PROJECT: 'bd-demo1'
-              DEPLOYABLES: 'app.yaml'
+              DEPLOYABLES: '../app.yaml'
               VERSION: '${BITBUCKET_BUILD_NUMBER}'
               EXTRA_ARGS: '--verbosity=debug'
