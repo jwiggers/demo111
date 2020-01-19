@@ -17,6 +17,7 @@ pipelines:
         name: Deploy to test
         deployment: test
         script:
+          - cd backend
           - pipe: atlassian/google-app-engine-deploy:0.6.0
             variables:
               KEY_FILE: $KEY_FILE
