@@ -14,6 +14,8 @@ import {map} from 'rxjs/operators';
   <button class="btn" (click)="rxStompService.activate()">Activate</button>
   <button class="btn" (click)="rxStompService.deactivate()">DeActivate</button>
   <button class="btn" (click)="rxStompService.stompClient.forceDisconnect()">Simulate Error</button>
+  <h2>Error message</h2>
+{{errorMessage}}
 </div>
 <div id="messages">
     <button class="btn btn-primary" (click)="onSendMessage()">Send Test Message</button>
@@ -36,20 +38,26 @@ export class MessagesComponent implements OnInit {
   }
   public connectionStatus$: Observable<string>;
   public receivedMessages: string[] = [];
+  public errorMessage: string;
   private topicSubscription: Subscription;
+  private errorSubscription: Subscription;
 
   ngOnInit() {
     this.topicSubscription = this.rxStompService.watch('/topic/demo').subscribe((message: Message) => {
       this.receivedMessages.push(message.body);
     });
+    this.errorSubscription = this.rxStompService.watch('/topic/errors').subscribe((message: Message) => {
+      this.errorMessage = message.body;
+    });
   }
 
   ngOnDestroy() {
     this.topicSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
   }
   
   onSendMessage() {
-    const message = `Message generated at ${new Date}`;
-    this.rxStompService.publish({destination: '/topic/demo', body: message});
+    const message = {text: `Message generated at ${new Date}`};
+    this.rxStompService.publish({destination: '/app/message', body: JSON.stringify(message)});
   }
 }

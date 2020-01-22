@@ -18,15 +18,16 @@ public class WebSocketController {
     private SimpMessageSendingOperations messagingTemplate;
 
     @MessageMapping("/message")
-    @SendTo("/topic/reply")
+    @SendTo("/topic/demo")
     public String processMessageFromClient(@Payload String message) throws Exception {
-        String name = new Gson().fromJson(message, Map.class).get("name").toString();
+        String name = new Gson().fromJson(message, Map.class).get("text").toString();
         return name;
     }
 
     @MessageExceptionHandler
+    @SendTo("/topic/errors")
     public String handleException(Throwable exception) {
-        messagingTemplate.convertAndSend("/errors", exception.getMessage());
+//        messagingTemplate.convertAndSend("/errors", exception.getMessage());
         return exception.getMessage();
     }
 
